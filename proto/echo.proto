@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "illinois/grcp/echo";
+
+package echo;
+
+service Echo {
+    rpc call (echoRequest) returns (echoResponse) {}
+}
+
+message echoRequest {
+    string name = 1;
+}
+
+message echoResponse {
+    string message = 1;
+}
+
+service Calculate {
+    rpc sum (calculateRequest) returns (calculateResponse) {}
+    rpc min (calculateRequest) returns (calculateResponse) {}
+}
+
+message calculateRequest {
+    int32 arg1 = 1;
+    sint32 arg2 = 2;
+}
+
+message calculateResponse {
+    sint32 result = 1;
+}
