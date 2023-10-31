@@ -12,14 +12,17 @@ import (
 )
 
 func main() {
-	connect, err := grpc.Dial("127.0.0.1:8717", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	connect, err := grpc.Dial(":8717", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
 	defer connect.Close()
 
-	var echoClient = pb.NewEchoClient(connect)
-	var calculateClient = pb.NewCalculateClient(connect)
+	var (
+		echoClient = pb.NewEchoClient(connect)
+		calculateClient = pb.NewCalculateClient(connect)
+	)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
