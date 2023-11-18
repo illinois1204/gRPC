@@ -3,36 +3,36 @@ package main
 import (
 	"context"
 	"fmt"
-	pb "grpc-client/pkg"
-	"log"
-	"time"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	echo "grpc-client/pkg/echo"
+	"log"
+	"time"
 )
 
 func main() {
-	connect, err := grpc.Dial("127.0.0.1:8718", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	const PORT = 8717
+	connect, err := grpc.Dial(fmt.Sprintf("127.0.0.1:%d", PORT), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
 	defer connect.Close()
 
-	var (
-		echoClient = pb.NewEchoClient(connect)
-		calculateClient = pb.NewCalculateClient(connect)
-	)
-
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	echoResponse, err := echoClient.Call(ctx, &pb.EchoRequest{Name: "Jose"})
+	var (
+		echoClient      = echo.NewEchoClient(connect)
+		calculateClient = echo.NewCalculateClient(connect)
+	)
+
+	echoResponse, err := echoClient.Call(ctx, &echo.EchoRequest{Name: "Jose"})
 	if err != nil {
 		log.Fatalf("could not connect: %v", err)
 	}
 	fmt.Printf("%s\n", echoResponse.GetMessage())
 
-	calculateResponse, err := calculateClient.Sum(ctx, &pb.CalculateRequest{Arg1: 45, Arg2: 87})
+	calculateResponse, err := calculateClient.Sum(ctx, &echo.CalculateRequest{Arg1: 45, Arg2: 87})
 	if err != nil {
 		log.Fatalf("could not connect: %v", err)
 	}

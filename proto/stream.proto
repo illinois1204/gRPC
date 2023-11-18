@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "illinois/grcp/stream";
+
+package stream;
+
+service StreamEcho {
+    rpc RunServerStream (RequestPayload) returns (stream ResponsePayload) {}
+    rpc RunClientStream (stream RequestPayload) returns (ArrResponsePayload) {}
+    rpc RunDuplexStream (stream RequestPayload) returns (stream ResponsePayload) {}
+}
+
+message RequestPayload {
+    int32 code = 1;
+    string msg = 2;
+}
+
+message ResponsePayload {
+    int32 code = 1;
+    string status = 2;
+}
+
+message ArrResponsePayload {
+    repeated ResponsePayload info = 1;
+}

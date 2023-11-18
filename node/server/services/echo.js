@@ -4,4 +4,4 @@ function call(call, callback) {
     callback(null, res);
 }
 
-export const EchoMethods = { call }
+export const EchoImplementation = { call }

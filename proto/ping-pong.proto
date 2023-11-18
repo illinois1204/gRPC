@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "illinois/grcp/pingPong";
+
+package pingPong;
+
+service PingPong {
+    rpc Play (stream Empty) returns (stream Empty) {}
+}
+
+message Empty {}

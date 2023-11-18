@@ -1,7 +1,15 @@
 import grpc from "@grpc/grpc-js"
 import protoLoader from "@grpc/proto-loader"
+import { echoSample } from "./stub/echo.js";
+import { clientStream, duplexStream, serverStream } from "./stub/stream-echo.js";
+import { playPingPong } from "./stub/ping-pong.js";
 
-const PROTO_PATH = "../../proto/echo.proto"
+const PORT = 8717;
+const PROTO_PATH = [
+    "../../proto/echo.proto",
+    "../../proto/stream.proto",
+    "../../proto/ping-pong.proto"
+]
 const protoLoaderOptions = { 
     KeepCase : true, 
     longs : String, 
@@ -11,36 +19,22 @@ const protoLoaderOptions = {
 }
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, protoLoaderOptions);
-const EchoContract = grpc.loadPackageDefinition(packageDefinition).echo;
+const PACKAGE_NAME_SPACE = grpc.loadPackageDefinition(packageDefinition);
+const CONTRACTS = {
+    Echo: PACKAGE_NAME_SPACE.echo,
+    Stream: PACKAGE_NAME_SPACE.stream,
+    PingPong: PACKAGE_NAME_SPACE.pingPong
+};
 
-const STUB = {
-    Echo: new EchoContract.Echo("127.0.0.1:8718", grpc.credentials.createInsecure()),
-    Calculate: new EchoContract["Calculate"]("127.0.0.1:8717", grpc.credentials.createInsecure())
+export const STUB = {
+    Echo: new CONTRACTS.Echo.Echo(`127.0.0.1:${PORT}`, grpc.credentials.createInsecure()),
+    Calculate: new CONTRACTS.Echo["Calculate"](`127.0.0.1:${PORT}`, grpc.credentials.createInsecure()),
+    StreamEcho: new CONTRACTS.Stream.StreamEcho(`127.0.0.1:${PORT}`, grpc.credentials.createInsecure()),
+    PingPong: new CONTRACTS.PingPong.PingPong(`127.0.0.1:${PORT}`, grpc.credentials.createInsecure())
 }
 
-STUB.Echo.call({ name: "illinois" }, (err, res) => {
-    if (err) {
-        console.log(err);
-    }
-    else {
-        console.log(res);
-    }
-})
-
-STUB.Calculate.sum({ arg1: 50, arg2: 25 }, (err, res) => {
-    if (err) {
-        console.log(err);
-    }
-    else {
-        console.log(res);
-    }
-})
-
-STUB.Calculate.min({ arg1: 35, arg2: 22 }, (err, res) => {
-    if (err) {
-        console.log(err);
-    }
-    else {
-        console.log(res);
-    }
-})
+// echoSample();
+// serverStream();
+// clientStream();
+// duplexStream();
+playPingPong()

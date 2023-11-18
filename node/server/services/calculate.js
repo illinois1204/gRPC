@@ -10,4 +10,4 @@ function min(call, callback) {
     callback(null, { result });
 }
 
-export const CalculateMethods = { sum, min }
+export const CalculateImplementation = { sum, min }
