@@ -1,8 +1,8 @@
-# At first instal `protoc` and add to PATH variable 
+# At first install `protoc` and add to PATH variable 
 
 ## Compile proto to GO
 
-1. install plagins:
+1. install plugins:
 ```sh
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
@@ -15,7 +15,7 @@ protoc --go_out=./pkg/ --go_opt=paths=source_relative --go-grpc_out=./pkg/ --go-
 ```
 
 ## Compile proto to Python
-1. install plagins:
+1. install plugins:
 ```sh
 python -m pip install grpcio
 python -m pip install grpcio-tools
