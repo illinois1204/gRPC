@@ -3,15 +3,15 @@ package services
 import (
 	"context"
 	"fmt"
-	pb "grpc-server/pkg"
+	"grpc-server/pkg/echo"
 	"time"
 )
 
 type EchoService struct {
-	pb.UnimplementedEchoServer
+	echo.UnimplementedEchoServer
 }
 
-func (s *EchoService) Call(ctx context.Context, input *pb.EchoRequest) (*pb.EchoResponse, error) {
+func (s *EchoService) Call(ctx context.Context, input *echo.EchoRequest) (*echo.EchoResponse, error) {
 	var name string = input.GetName()
-	return &pb.EchoResponse{Message: fmt.Sprintf("yaos, %s, this response from server. Time is %s", name, time.Now().String())}, nil
+	return &echo.EchoResponse{Message: fmt.Sprintf("yaos, %s, this response from server. Time is %s", name, time.Now().String())}, nil
 }

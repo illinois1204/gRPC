@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	const PORT uint16 = 8718
+	const PORT uint16 = 8717
 	address, err := net.Listen("tcp", fmt.Sprintf(":%d", PORT))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

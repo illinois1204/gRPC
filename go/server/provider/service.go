@@ -1,13 +1,17 @@
 package provider
 
 import (
-	pb "grpc-server/pkg"
+	echo "grpc-server/pkg/echo"
+	pingPong "grpc-server/pkg/ping-pong"
+	"grpc-server/pkg/stream"
 	"grpc-server/services"
 
 	"google.golang.org/grpc"
 )
 
 func RegisterServices(s *grpc.Server) {
-	pb.RegisterEchoServer(s, &services.EchoService{})
-	pb.RegisterCalculateServer(s, &services.CalculateService{})
+	echo.RegisterEchoServer(s, &services.EchoService{})
+	echo.RegisterCalculateServer(s, &services.CalculateService{})
+	stream.RegisterStreamEchoServer(s, &services.StreamService{})
+	pingPong.RegisterPingPongServer(s, &services.PingPongService{})
 }
